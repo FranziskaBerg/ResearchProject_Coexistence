@@ -23,7 +23,6 @@ for b in blist:
     plt.plot(popList,repList, label = 'b =' + str(b))
     plt.legend()
     
-    
 plt.xlabel('Population size / carrying capacity N/K')
 plt.ylabel('Reproduction ratio N(t+1)/N(t)')
 plt.axhline(y=1, color='k', linestyle='--')
