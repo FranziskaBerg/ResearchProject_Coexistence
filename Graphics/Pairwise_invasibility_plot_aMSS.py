@@ -28,10 +28,8 @@ def invaderFitness (resident, d, r, K, b):
     for t in range (0,T):
         N = resident[t]
         rep = MSS(d,r,N,K,b)
-        fit += rep
-    mFit = fit.max()
-    lFit = ma.log(mFit)
-    fitness = lFit/T
+        if rep != 0: fit += ma.log(rep)
+    fitness = fit/T
     return fitness
 
 #Sets initial Values
@@ -40,14 +38,16 @@ r = 5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0.1,20,100)
+bvalues = np.logspace(0.1,1.3,100)
 bvalues.sort()
 bposition = len(bvalues)
+
+print bvalues
 
 #Create result Array
 result = np.zeros((100,100))
 
-r = 1
+ra = 1
 
 #Fill result Array
 for a in range (0,bposition):
@@ -57,12 +57,17 @@ for a in range (0,bposition):
         bI = bvalues[b]
         fitness = invaderFitness(resident, d, r, K, bI)
         result[a,b] = fitness
-    print r
-    r += 1
-
+    print ra
+    ra += 1
+    
+print result
 y, x = np.meshgrid(bvalues,bvalues)
 z = result
 
 plt.pcolor(x,y,z)
 plt.colorbar()
+plt.xscale('log')
+plt.yscale('log')
+plt.xlim(0,19.95)
+plt.ylim(0,19.95)
 plt.show()
