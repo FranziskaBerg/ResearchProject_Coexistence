@@ -42,12 +42,8 @@ bvalues = np.logspace(0.1,1.3,100)
 bvalues.sort()
 bposition = len(bvalues)
 
-print bvalues
-
 #Create result Array
 result = np.zeros((100,100))
-
-ra = 1
 
 #Fill result Array
 for a in range (0,bposition):
@@ -57,13 +53,12 @@ for a in range (0,bposition):
         bI = bvalues[b]
         fitness = invaderFitness(resident, d, r, K, bI)
         result[a,b] = fitness
-    print ra
-    ra += 1
     
-print result
+#Creates plot data
 y, x = np.meshgrid(bvalues,bvalues)
 z = result
 
+#Defines the graphic
 plt.pcolor(x,y,z)
 plt.colorbar()
 plt.xscale('log')
