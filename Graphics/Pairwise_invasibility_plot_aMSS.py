@@ -38,12 +38,12 @@ r = 5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0.1,1.3,100)
+bvalues = np.logspace(0.1,1.3,200)
 bvalues.sort()
 bposition = len(bvalues)
 
 #Create result Array
-result = np.zeros((100,100))
+result = np.zeros((200,200))
 
 #Fill result Array
 for a in range (0,bposition):
@@ -59,10 +59,13 @@ y, x = np.meshgrid(bvalues,bvalues)
 z = result
 
 #Defines the graphic
-plt.pcolor(x,y,z)
+plt.pcolor(x,y,z,cmap='RdYlGn', vmin = -2, vmax= 2)
 plt.colorbar()
 plt.xscale('log')
 plt.yscale('log')
 plt.xlim(0,19.95)
 plt.ylim(0,19.95)
+plt.axvline(x=2.533333333, color='k', linestyle='--')
+plt.xticks(np.arange(x.min(), x.max(), 1.0))
+plt.yticks(np.arange(y.min(), y.max(), 1.0))
 plt.show()
