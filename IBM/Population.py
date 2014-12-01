@@ -19,10 +19,10 @@ class Population:
     
     def updatePopulation(self):
         N = len(self.individuals)
+        Nto = self.getPopulationSize()
         for i in range(0,N):
             individual = self.individuals[i]
-            print i, individual.getIndividualNumber()
-            individual = individual.getOffspring(self.r,self.d,self.K)
+            individual = individual.getOffspring(self.r,self.d,Nto,self.K)
             self.individuals[i] = individual
             
     def getPopulationSize(self):
