@@ -39,13 +39,13 @@ r = 5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0,1.3,50)
+bvalues = np.logspace(0,1.3,200)
 bvalues.sort()
 bposition = len(bvalues)
 
 #Create result Arrays
-result = np.zeros((50,50))
-result2 = np.zeros((50,50))
+result = np.zeros((200,200))
+result2 = np.zeros((200,200))
 
 #Fill result Array
 for a in range (0,bposition):
