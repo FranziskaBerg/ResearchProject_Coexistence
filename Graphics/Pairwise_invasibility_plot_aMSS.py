@@ -39,13 +39,13 @@ r = 5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0,1.3,50)
+bvalues = np.logspace(0,1.3,200)
 bvalues.sort()
 bposition = len(bvalues)
 
 #Create result Arrays
-result = np.zeros((50,50))
-result2 = np.zeros((50,50))
+result = np.zeros((200,200))
+result2 = np.zeros((200,200))
 
 #Fill result Array
 for a in range (0,bposition):
@@ -71,8 +71,29 @@ y, x = np.meshgrid(bvalues,bvalues)
 z = result
 z2 = result2
 
+#Define colormap
+cdict3 = {'red':  ((0.0, 0.0, 0.0),
+                   (0.25,0.0, 0.0),
+                   (0.5, 0.8, 1.0),
+                   (0.75,1.0, 1.0),
+                   (1.0, 0.4, 1.0)),
+
+         'green': ((0.0, 0.0, 0.0),
+                   (0.25,0.0, 0.0),
+                   (0.5, 0.9, 0.9),
+                   (0.75,0.0, 0.0),
+                   (1.0, 0.0, 0.0)),
+
+         'blue':  ((0.0, 0.0, 0.4),
+                   (0.25,1.0, 1.0),
+                   (0.5, 1.0, 0.8),
+                   (0.75,0.0, 0.0),
+                   (1.0, 0.0, 0.0))
+        }
+plt.register_cmap(name='BlueRed', data=cdict3)
+
 #Defines the graphic 1
-plt.pcolor(x,y,z,cmap='bwr', vmin = -2, vmax= 2)
+plt.pcolor(x,y,z,cmap='BlueRed', vmin = -2, vmax = 2)
 plt.colorbar()
 plt.xscale('log')
 plt.yscale('log')
