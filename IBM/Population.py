@@ -4,7 +4,6 @@ Created on 27.11.2014
 @author: Franziska Berg
 '''
 from Individual import *
-import numpy as np
 
 class Population:
     
@@ -16,15 +15,14 @@ class Population:
         self.K = K
         self.m = m
         for i in range(0,N):
-            self.individuals.append(Individual())
-    
+            self.individuals.append(Individual(1,0))
+                
     def updatePopulation(self,cycle):
-        for c in range (0,cycle):
+        for c in range(0,cycle):
             self.getPopulationSize()
             for i in self.individuals:
                 i.reproduce(self.r, self.d, self.N, self.K)
             self.mutate()
-            print self.getPopulationSize()
         
     def mutate(self):
         for i in self.individuals:
@@ -43,3 +41,14 @@ class Population:
             individualN += i.getIndividualNumber()
         self.N = individualN
         return self.N
+    
+    def getAverageB(self):
+        b = 0
+        for i in self.individuals:
+            b += i.getB()
+        averageB = b / len(self.individuals)
+        return averageB
+    
+    def getCriticalB(self):
+        b = 2-(2/(1+(self.d-1)*self.r))
+        return b
