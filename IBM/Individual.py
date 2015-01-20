@@ -8,17 +8,21 @@ from copy import deepcopy
 
 class Individual:
     
-    def __init__(self,N,b):
+    def __init__(self,r,d,N,b,K,resident=True):
         self.number = N
+        self.r = r
+        self.d = d
+        self.K = K
+        self.resident = resident
         if b == 0:
             self.b_value = np.random.normal(0,15)
             if self.b_value < 0.17:
                 self.b_value = 0.17
         else:
             self.b_value = b
-        
-    def reproduce(self,r,d,N,K):
-        poisson = self.number*r*(1-d)/(1+(r-1)*(N/K)**self.b_value)
+       
+    def reproduce(self,N):
+        poisson = self.number*self.r*(1-self.d)/(1+(self.r-1)*(N/self.K)**self.b_value)
         self.number = np.random.poisson(poisson)
         
     def getRep(self,r,d,N,K):
@@ -40,5 +44,4 @@ class Individual:
     def getB(self):
         return self.b_value
     
-
             
