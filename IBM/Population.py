@@ -7,7 +7,7 @@ from Individual import *
 
 class Population:
     
-    def __init__(self,mutationON=False,mutationProbability=0):
+    def __init__(self, mutationProbability, mutationON=False):
         self.individuals = []
         self.mutationProbability = mutationProbability
         self.totalPopulationSize = 0
@@ -19,6 +19,13 @@ class Population:
     def addNidenticalIndividuals(self, Number,r,d,N,b,K,resident = True):
         for i in xrange(0,Number):
             self.individuals.append(Individual(r,d,N,b,K,resident))
+            
+    def addNdifferentIndividuals(self, number, r, d, K, resident=False):
+        for i in range(number):
+            b = np.random.normal(0,15)
+            if b < 0.17:
+                b = 0.17
+            self.individuals.append(Individual(r, d, 1, b, K, resident))
             
     def addExistingIndividual(self, individual):
         self.individuals.append(individual)
@@ -36,7 +43,7 @@ class Population:
     def mutate(self):
         for i in self.individuals:
             numberIndividuals = i.getIndividualNumber()
-            numberMutants = np.random.poisson(numberIndividuals *self.mutationProbability / self.K)
+            numberMutants = np.random.poisson(numberIndividuals *self.mutationProbability / i.K)
             if numberMutants > numberIndividuals: numberMutants = numberIndividuals
             for k in range(0,numberMutants):
                 mutant = i.getMutant()
@@ -63,7 +70,7 @@ class Population:
             if i.resident == True:
                 present = True
         return present
-                
+    
     def residentinvaderPresent(self):
         present = False
         resident = self.residentPresent()
@@ -76,8 +83,8 @@ class Population:
         b = 0
         for i in self.individuals:
             b += i.getB()
-        averageB = b / len(self.individuals)
-        return averageB
+        if len(self.individuals) != 0: return b/len(self.individuals)
+        elif len(self.individuals) == 0: return 0
     
     def getResidentAverageB(self):
         b = 0
@@ -99,6 +106,6 @@ class Population:
         if individual != 0: return b/individual
         elif individual == 0: return 0
     
-    def getCriticalB(self):
-        b = 2-(2/(1+(self.d-1)*self.r))
+    def getCriticalB(self, r, d):
+        b = 2-(2/(1+(d-1)*r))
         return b

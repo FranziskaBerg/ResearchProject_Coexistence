@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig
 
 # Definition of the Model
-def MSS (d, r, N, K, b): return (1-d)*r/(1+(r-1)*(N/K)**b)
+from PopulationModels import MSS
 
 #Creates resident population
 def residentPopulation (N, cycles, d, r, K, b):
     resident = []
     T = cycles +1
     for t in range (0,T):
-        rep = MSS(d, r, N, K, b)
+        rep = MSS.getReproductionRatio(r, d, N, b, K)
         N = N*rep
         if t >= 100:
             resident += [N,]
@@ -26,9 +26,8 @@ def residentPopulation (N, cycles, d, r, K, b):
 def invaderFitness (resident, d, r, K, b):
     fit = 0
     T = len(resident)
-    for t in range (0,T):
-        N = resident[t]
-        rep = MSS(d,r,N,K,b)
+    for Nr in resident:
+        rep = MSS.getReproductionRatio(r, d, Nr, b, K)
         if rep != 0: fit += ma.log(rep)
     fitness = fit/T
     return fitness
@@ -39,7 +38,7 @@ r = 5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0,1.3,200)
+bvalues = np.logspace(-1,1.3,200)
 bvalues.sort()
 bposition = len(bvalues)
 
@@ -100,7 +99,7 @@ plt.yscale('log')
 plt.xlim(0,19.95)
 plt.ylim(0,19.95)
 plt.axvline(x=2.533333333, color='k', linestyle='--')
-tick = [2,3,4,5,6,7,8,9,10,12,15]
+tick = [0.5,1,2,3,4,5,6,8,10,15]
 plt.xticks(tick,tick)
 plt.yticks(tick,tick)
 savefig("PIP_MSS1.png")

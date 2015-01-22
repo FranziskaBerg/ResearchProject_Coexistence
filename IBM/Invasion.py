@@ -22,7 +22,7 @@ class Invasion:
             population.updatePopulation(delay)
             population.addIndividual(r, d, N2, b2, K, resident=False)
             population.updatePopulation(dataTime)
-            if population.invaderPresent(): self.invasion += 1.0
+            if population.invaderPresent(): invasion += 1.0
         return invasion / repetitions
 
     def runCoexistence(self, N, r, d, K, b1, b2):
@@ -39,7 +39,7 @@ class Invasion:
         return ma.log10(timeUntilDeath), survivor
     
     def runMutationdevelopment_coexistingCommunity(self, N, r, d, K, b1, b2, m):
-        bValues = np.zeros((150000,3))
+        bValues = np.zeros((15000,3))
         time = 1
         resultPosition = 0
         population = Population(m, mutationON=False)
@@ -47,19 +47,21 @@ class Invasion:
         population.addIndividual(r, d, N, b2, K, resident=False)
         while time <= 30000:
             population.updatePopulation(1)
-            bValues[resultPosition]= [time, population.getResidentAverageB(),population.getInvaderAverageB()]
+            if time % 100 == 1: 
+                bValues[resultPosition]= [time, population.getResidentAverageB(),population.getInvaderAverageB()]
+                resultPosition += 1
             time += 1
-            resultPosition += 1
         population.mutationON = True
         while time <= 150000:
             population.updatePopulation(1)
-            bValues[resultPosition] = [time, population.getResidentAverageB(),population.getInvaderAverageB()]
+            if time % 100 == 1: 
+                bValues[resultPosition] = [time, population.getResidentAverageB(),population.getInvaderAverageB()]
+                resultPosition += 1
             time += 1
-            resultPosition += 1
         return bValues
     
     def runMutationdevelopment_independentPopulations(self, N, r, d, K, b1, b2, m):
-        bValues = np.zeros((150000,3))
+        bValues = np.zeros((15000,3))
         time = 1
         resultPosition = 0
         population1 = Population(m, mutationON=False)
@@ -69,15 +71,17 @@ class Invasion:
         while time <= 30000:
             population1.updatePopulation(1)
             population2.updatePopulation(1)
-            bValues[resultPosition] = [time, population1.getAverageB(), population2.getAverageB()]
+            if time % 100 == 1: 
+                bValues[resultPosition] = [time, population1.getAverageB(), population2.getAverageB()]
+                resultPosition += 1
             time += 1
-            resultPosition += 1
         population1.mutationON = True
         population2.mutationON = True
         while time <= 150000:
             population1.updatePopulation(1)
             population2.updatePopulation(1)
-            bValues[resultPosition] = [time, population1.getAverageB(), population2.getAverageB()]
+            if time % 100 == 1: 
+                bValues[resultPosition] = [time, population1.getAverageB(), population2.getAverageB()]
+                resultPosition += 1
             time += 1
-            resultPosition += 1
         return bValues

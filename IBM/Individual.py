@@ -3,8 +3,11 @@ Created on 27.11.2014
 
 @author: Franziska Berg
 '''
+from __future__ import division
+
 import numpy as np
 from copy import deepcopy
+from PopulationModels import MSS
 
 class Individual:
     
@@ -14,26 +17,19 @@ class Individual:
         self.d = d
         self.K = K
         self.resident = resident
-        if b == 0:
-            self.b_value = np.random.normal(0,15)
-            if self.b_value < 0.17:
-                self.b_value = 0.17
-        else:
-            self.b_value = b
+        self.b_value = b
        
     def reproduce(self,N):
-        poisson = self.number*self.r*(1-self.d)/(1+(self.r-1)*(N/self.K)**self.b_value)
+        poisson = self.number*MSS.getReproductionRatio(self.r, self.d, N, self.b_value, self.K)    
+        #self.r*(1-self.d)/(1+(self.r-1)*(N/self.K)**self.b_value)
         self.number = np.random.poisson(poisson)
         
-    def getRep(self,r,d,N,K):
-        rep = r*(1-d)/(1+(r-1)*(N/K)**self.b_value)
-        return rep
-    
+   
     def getMutant(self):
         self.number -= 1
         newMutant = deepcopy(self)
         newMutant.number = 1
-        newMutant.b_value = self.b_value + np.random.normal()
+        newMutant.b_value = self.b_value + np.random.normal(scale=0.15)
         if newMutant.b_value < 0.17:
             newMutant.b_value = 0.17
         return(newMutant)
