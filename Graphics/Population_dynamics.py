@@ -11,14 +11,14 @@ d = 0.05
 N = 100
 K = 200
 
-def MSS(d,r,N,K,B): return (1-d)*r*N/(1+(r-1)*(N/K)**b)
+from PopulationModels import MSS
 
 result = np.zeros((280*400,3),"float")
 s = 0
 
 for b in np.linspace(1,7,280):
     for i in range (1,500):
-        Nt = MSS(d, r, N, K , b)
+        Nt = N*MSS.getReproductionRatio(r, d, N, b, K)
         if i > 100:
             result[s,:] =([b, N, K])
             s+= 1

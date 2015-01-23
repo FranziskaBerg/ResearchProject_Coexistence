@@ -5,6 +5,7 @@ Created on 11.11.2014
 '''
 import numpy as np
 import matplotlib.pyplot as plt
+from PopulationModels import MSS
 
 b = 1
 d = 0.05
@@ -17,7 +18,7 @@ for b in blist:
     
     for pop in np.arange(0.,2.,0.1):
         popList.append(pop)
-        rep = ((1-d)*r)/(1+(r-1)*(pop)**b)
+        rep = MSS.getReproductionRatio2(r, d, pop, b)
         repList.append(rep)
     
     plt.plot(popList,repList, label = 'b =' + str(b))
@@ -25,6 +26,7 @@ for b in blist:
     
 plt.xlabel('Population size / carrying capacity N/K')
 plt.ylabel('Reproduction ratio N(t+1)/N(t)')
+plt.title('test')
 plt.axhline(y=1, color='k', linestyle='--')
 plt.axvline(x=1, color='k', linestyle='--')
 plt.show()

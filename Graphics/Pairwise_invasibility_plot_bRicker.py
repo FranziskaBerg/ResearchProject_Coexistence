@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig
 
 # Definition of the Model
-def Ricker (d, r, N, K, b): return (1-d)*ma.exp(r*(1-(N/K)**b))
+from PopulationModels import Ricker
 
 #Creates resident population
 def residentPopulation (N, cycles, d, r, K, b):
     resident = []
     T = cycles +1
     for t in range (0,T):
-        rep = Ricker(d, r, N, K, b)
+        rep = Ricker.getReproductionRatio(r, d, N, b, K)
         N = N*rep
         if t >= 100:
             resident += [N,]
@@ -28,7 +28,7 @@ def invaderFitness (resident, d, r, K, b):
     T = len(resident)
     for t in range (0,T):
         N = resident[t]
-        rep = Ricker(d,r,N,K,b)
+        rep = Ricker.getReproductionRatio(r, d, N, b, K)
         if rep != 0: fit += ma.log(rep)
     fitness = fit/T
     return fitness
@@ -39,7 +39,7 @@ r = 0.5
 N = 100
 K = 200
 cycles = 500
-bvalues = np.logspace(0,1.3,200)
+bvalues = np.logspace(-1,1.3,200)
 bvalues.sort()
 bposition = len(bvalues)
 
@@ -99,10 +99,13 @@ plt.xscale('log')
 plt.yscale('log')
 plt.xlim(0,19.95)
 plt.ylim(0,19.95)
-# plt.axvline(x=, color='k', linestyle='--')
-tick = [2,3,4,5,6,7,8,9,10,12,15]
+plt.axvline(x=4.45725, color='k', linestyle='--')
+tick = [0.5,1,2,3,4,5,6,7,8,10,15]
 plt.xticks(tick,tick)
 plt.yticks(tick,tick)
+plt.title('(b) Ricker model ')
+plt.xlabel('Resident density-compensation strategy b')
+plt.ylabel('Invading density-compensation strategy b')
 savefig("PIP_Ricker1.png")
 
 #Defines graphic 2
@@ -114,6 +117,9 @@ plt.xlim(0,19.95)
 plt.ylim(0,19.95)
 plt.xticks(tick,tick)
 plt.yticks(tick,tick)
+plt.title('(b) Ricker model ')
+plt.xlabel('Resident density-compensation strategy b')
+plt.ylabel('Invading density-compensation strategy b')
 savefig("PIP_Ricker2.png")
 
 print "done"
